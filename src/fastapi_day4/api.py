@@ -7,6 +7,7 @@ from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel, Field
 
+from fastapi_day4.settings import get_settings
 from git_day_practice.settings import get_settings
 
 settings = get_settings()
@@ -124,3 +125,25 @@ async def divide(payload: DivideRequest) -> DivideResponse:
             detail="Division by zero is not allowed",
         )
     return DivideResponse(result=payload.a / payload.b)
+
+
+@app.get("/config")
+async def show_config() -> dict:
+    # Do NOT return secrets like API_KEY
+    s = get_settings()
+    return {
+        "app_name": s.app_name,
+        "environment": s.environment,
+        "debug": s.debug,
+        "host": s.host,
+        "port": s.port,
+        "allowed_origins": s.allowed_origins,
+    }
+
+
+@app.get("/secure-data")
+async def secure_data(x_api_key: str | None = Header(default=None)) -> dict:
+    s = get_settings()
+    if x_api_key != s.api_key:
+        raise HTTPException(status_code=401, detail="Invalid API key")
+    return {"secret_data": "approved"}
