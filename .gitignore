@@ -19,3 +19,4 @@ env/
 
 # Secrets / local environment
 .env
+.env.*
