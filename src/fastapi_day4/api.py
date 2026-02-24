@@ -8,6 +8,7 @@ from fastapi.responses import JSONResponse
 from pydantic import BaseModel, Field
 
 from fastapi_day4.settings import get_settings
+from git_day_practice.settings import get_settings
 
 settings = get_settings()
 app = FastAPI(title=settings.app_name)
@@ -65,6 +66,20 @@ async def health() -> dict:
     return {"status": "ok"}
 
 
+@app.get("/config")
+async def show_config() -> dict:
+    # Do NOT return secrets like API_KEY
+    s = get_settings()
+    return {
+        "app_name": s.app_name,
+        "environment": s.environment,
+        "debug": s.debug,
+        "host": s.host,
+        "port": s.port,
+        "allowed_origins": s.allowed_origins,
+    }
+
+
 @app.post("/items", response_model=ItemOut, status_code=201)
 async def create_item(payload: ItemCreate) -> ItemOut:
     global _next_id
@@ -92,6 +107,14 @@ async def delete_item(item_id: int) -> None:
         raise HTTPException(status_code=404, detail="Item not found")
     del _items[item_id]
     return None
+
+
+@app.get("/secure-data")
+async def secure_data(x_api_key: str | None = Header(default=None)) -> dict:
+    s = get_settings()
+    if x_api_key != s.api_key:
+        raise HTTPException(status_code=401, detail="Invalid API key")
+    return {"secret_data": "approved"}
 
 
 @app.post("/math/divide", response_model=DivideResponse)
