@@ -1,4 +1,5 @@
 import os
+
 import pytest
 from fastapi.testclient import TestClient
 
@@ -9,6 +10,7 @@ os.environ.setdefault("ENVIRONMENT", "test")
 os.environ.setdefault("DEBUG", "false")
 
 from fastapi_day4.api import app
+
 
 @pytest.fixture(scope="session")
 def client() -> TestClient:
