@@ -20,3 +20,4 @@ env/
 # Secrets / local environment
 .env
 .env.*
+docker.env
