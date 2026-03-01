@@ -8,6 +8,8 @@ from fastapi.responses import JSONResponse
 from pydantic import BaseModel, Field
 
 from fastapi_day4.settings import get_settings
+import psycopg
+from qdrant_client import QdrantClient
 
 # from git_day_practice.settings import get_settings
 
@@ -126,6 +128,31 @@ async def divide(payload: DivideRequest) -> DivideResponse:
             detail="Division by zero is not allowed",
         )
     return DivideResponse(result=payload.a / payload.b)
+
+
+@app.get("/db/health")
+async def db_health():
+    s = get_settings()
+    try:
+        with psycopg.connect(s.database_url) as conn:
+            with conn.cursor() as cur:
+                cur.execute("SELECT 1;")
+                _ = cur.fetchone()
+        return {"postgres": "ok"}
+    except Exception as e:
+        raise HTTPException(status_code=503, detail=f"postgres not ready: {e}")
+
+
+@app.get("/qdrant/health")
+async def qdrant_health():
+    s = get_settings()
+    try:
+        client = QdrantClient(url=s.qdrant_url)
+        # A simple call that should succeed if Qdrant is reachable.
+        _ = client.get_collections()
+        return {"qdrant": "ok"}
+    except Exception as e:
+        raise HTTPException(status_code=503, detail=f"qdrant not ready: {e}")
 
 
 # @app.get("/config")
