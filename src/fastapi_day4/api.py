@@ -3,6 +3,8 @@ from __future__ import annotations
 from typing import Dict, List
 
 from fastapi import FastAPI, Header, HTTPException, Request
+import psycopg
+from qdrant_client import QdrantClient
 from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel, Field
@@ -65,6 +67,31 @@ async def validation_exception_handler(
 @app.get("/health")
 async def health() -> dict:
     return {"status": "ok"}
+
+
+@app.get("/db/health")
+async def db_health():
+    s = get_settings()
+    try:
+        with psycopg.connect(s.database_url) as conn:
+            with conn.cursor() as cur:
+                cur.execute("SELECT 1;")
+                _ = cur.fetchone()
+        return {"postgres": "ok"}
+    except Exception as e:
+        raise HTTPException(status_code=503, detail=f"postgres not ready: {e}")
+
+
+@app.get("/qdrant/health")
+async def qdrant_health():
+    s = get_settings()
+    try:
+        client = QdrantClient(url=s.qdrant_url)
+        # A simple call that should succeed if Qdrant is reachable.
+        _ = client.get_collections()
+        return {"qdrant": "ok"}
+    except Exception as e:
+        raise HTTPException(status_code=503, detail=f"qdrant not ready: {e}")
 
 
 @app.get("/config")
