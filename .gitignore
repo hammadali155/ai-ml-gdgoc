@@ -20,4 +20,5 @@ env/
 # Secrets / local environment
 .env
 .env.*
+.env.compose
 docker.env
