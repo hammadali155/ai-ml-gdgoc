@@ -13,7 +13,13 @@ COPY . /app
 
 # Install runtime deps
 RUN python -m pip install --upgrade pip \
-    && python -m pip install "fastapi[standard]" pydantic-settings "psycopg[binary]" qdrant-client
+    && python -m pip install \
+    "fastapi[standard]" \
+    pydantic-settings \
+    "psycopg[binary]" \
+    sqlalchemy \
+    alembic \
+    qdrant-client
 
 # Expose the port your API will listen on
 EXPOSE 8000
