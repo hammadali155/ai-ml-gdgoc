@@ -9,8 +9,14 @@ from .settings import get_settings
 
 # SQLAlchemy 2.0 style engine + session factory
 settings = get_settings()
+
+# Ensure we use psycopg v3 driver (not psycopg2)
+_db_url = settings.database_url
+if _db_url.startswith("postgresql://"):
+    _db_url = _db_url.replace("postgresql://", "postgresql+psycopg://", 1)
+
 engine = create_engine(
-    settings.database_url,
+    _db_url,
     pool_pre_ping=True,
 )
 SessionLocal = sessionmaker(bind=engine, autoflush=False, autocommit=False)
