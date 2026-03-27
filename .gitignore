@@ -25,3 +25,12 @@ docker.env
 
 # Local caches
 .cache/
+.pytest_cache/
+.ruff_cache/
+
+# Build artifacts
+dist/
+build/
+
+# Generated data
+data/generated/

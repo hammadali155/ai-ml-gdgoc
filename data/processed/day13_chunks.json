@@ -1,0 +1,38 @@
+[
+  {
+    "chunk_id": "guide-001-chunk-001",
+    "doc_id": "guide-001",
+    "title": "FastAPI Basics",
+    "language": "en",
+    "source": "manual",
+    "chunk_index": 1,
+    "text": "FastAPI is a Python framework used to build APIs quickly. It provides automatic OpenAPI docs, validation through Pydantic, and a developer-friendly routing model. Teams often use it for backend services, internal tools, and AI APIs."
+  },
+  {
+    "chunk_id": "guide-002-chunk-001",
+    "doc_id": "guide-002",
+    "title": "Docker Compose Overview",
+    "language": "en",
+    "source": "manual",
+    "chunk_index": 1,
+    "text": "Docker Compose helps run multiple services together, such as an API, a database, and a vector database. It defines services, ports, environment variables, volumes, and health checks in one file."
+  },
+  {
+    "chunk_id": "guide-003-chunk-001",
+    "doc_id": "guide-003",
+    "title": "Qdrant and Retrieval",
+    "language": "en",
+    "source": "manual",
+    "chunk_index": 1,
+    "text": "Qdrant stores embeddings as vectors and allows similarity search over them. Each stored point can include metadata such as document id, chunk id, language, source, and title, which improves filtering and debugging."
+  },
+  {
+    "chunk_id": "guide-004-chunk-001",
+    "doc_id": "guide-004",
+    "title": "ملٹی لنگول سرچ",
+    "language": "ur",
+    "source": "manual",
+    "chunk_index": 1,
+    "text": "ملٹی لنگول سرچ میں مختلف زبانوں کے متن کو ایک مشترکہ ویکٹر اسپیس میں تلاش کیا جا سکتا ہے۔ اگر ڈاکومنٹس کو مناسب چنکس میں تقسیم کیا جائے اور ہر چنک کے ساتھ میٹا ڈیٹا رکھا جائے تو رزلٹس زیادہ بہتر اور قابل فہم ہوتے ہیں۔"
+  }
+]
