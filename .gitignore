@@ -22,3 +22,6 @@ env/
 .env.*
 .env.compose
 docker.env
+
+# Local caches
+.cache/
