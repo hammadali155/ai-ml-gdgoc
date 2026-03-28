@@ -33,6 +33,19 @@ class Settings(BaseSettings):
     database_url: str = Field(..., validation_alias="DATABASE_URL")
     qdrant_url: str = Field(..., validation_alias="QDRANT_URL")
 
+    # --- Day 15: RAG settings ---
+    qdrant_collection_name: str = Field(
+        default="week2_day13_chunks", validation_alias="QDRANT_COLLECTION_NAME"
+    )
+    default_search_limit: int = Field(default=3)
+    embedding_model_name: str = Field(
+        default="sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2"
+    )
+    groq_api_key: str = Field(..., validation_alias="GROQ_API_KEY")
+    groq_model_name: str = Field(
+        default="llama-3.1-8b-instant", validation_alias="GROQ_MODEL"
+    )
+
     # Comma-separated list in .env -> parsed into list[str] using custom logic
     allowed_origins_raw: str = Field(default="", validation_alias="ALLOWED_ORIGINS")
 
