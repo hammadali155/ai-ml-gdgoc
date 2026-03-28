@@ -10,6 +10,8 @@ from pydantic import BaseModel, Field
 from qdrant_client import QdrantClient
 from sqlalchemy.orm import Session
 
+from fastapi_day4.rag import answer_with_rag
+from fastapi_day4.schema import RagRequest, RagResponse
 from fastapi_day4.settings import get_settings
 
 from .db import get_db
@@ -194,3 +196,19 @@ async def list_db_items(db: Session = Depends(get_db)):  # noqa: B008
         }
         for x in items
     ]
+
+
+# --------------- Day 15: RAG endpoint ---------------
+
+
+@app.post("/rag", response_model=RagResponse)
+def rag_endpoint(payload: RagRequest) -> RagResponse:
+    try:
+        result = answer_with_rag(payload.question, payload.limit)
+    except Exception as exc:
+        raise HTTPException(status_code=500, detail=f"RAG failed: {exc}") from exc
+    return RagResponse(
+        question=result["question"],
+        answer=result["answer"],
+        sources=result["sources"],
+    )
