@@ -47,3 +47,43 @@ def search_chunks(query: str, limit: int | None = None) -> list[dict]:
             }
         )
     return chunks
+
+
+def merge_results(result_sets: list[list[dict]], final_limit: int) -> list[dict]:
+    best_by_chunk_id: dict[str, dict] = {}
+
+    for result_set in result_sets:
+        for item in result_set:
+            chunk_id = item["chunk_id"]
+            if chunk_id not in best_by_chunk_id:
+                best_by_chunk_id[chunk_id] = item
+            else:
+                if item["score"] > best_by_chunk_id[chunk_id]["score"]:
+                    best_by_chunk_id[chunk_id] = item
+
+    merged = list(best_by_chunk_id.values())
+    merged.sort(key=lambda x: x["score"], reverse=True)
+    return merged[:final_limit]
+
+
+def dual_query_search(query: str, limit: int) -> dict:
+    settings = get_settings()
+    original_query = query.strip()
+
+    from fastapi_day4.normalization import normalize_roman_urdu
+
+    normalized_query = normalize_roman_urdu(query)
+
+    original_results = search_chunks(original_query, limit)
+    normalized_results = search_chunks(normalized_query, limit)
+
+    merged_results = merge_results(
+        [original_results, normalized_results],
+        final_limit=settings.merged_search_limit,
+    )
+
+    return {
+        "original_query": original_query,
+        "normalized_query": normalized_query,
+        "results": merged_results,
+    }

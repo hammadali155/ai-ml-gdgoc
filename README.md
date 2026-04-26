@@ -17,9 +17,10 @@ The project currently supports:
 - Multilingual embeddings (paraphrase-multilingual-MiniLM-L12-v2)
 - Document chunk ingestion into Qdrant
 - Retrieval over stored chunks (semantic search)
-- RAG answer generation through Groq
-- Answers returned with source context and citations
-
+- RAG answers over retrieved chunks
+- Roman-Urdu query normalization
+- dual-query retrieval
+- merged retrieval results for noisy inputs
 ## Tech Stack
 
 | Layer         | Technology                          |
@@ -57,6 +58,7 @@ src/
     vector_store.py     # Qdrant client helpers
     ingestion.py        # Chunking and record building
     retrieval.py        # Semantic search over Qdrant
+    normalization.py    # Roman-Urdu query normalization
     llm_client.py       # Groq LLM client helper
     rag.py              # RAG prompt construction & orchestration
     schema.py           # Pydantic request/response models
@@ -178,7 +180,7 @@ ruff format .
 - **Day 13:** Ingestion pipeline and repository cleanup
 - **Day 14:** Checkpoint (skipped in this workflow)
 - **Day 15:** RAG endpoint v1 with Groq and cited sources
-
+- **Day 16:** Roman-Urdu normalization and dual-query retrieval
 ## Known Limitations
 
 - Chunking uses a simple word-count strategy (no sentence-aware splitting)
@@ -189,9 +191,7 @@ ruff format .
 
 ## Next Steps
 
-- Roman-Urdu normalization
-- Dual-query retrieval and result merging
-- Answer confidence and refusal logic
-- Logging interactions to Postgres
-- Better citation formatting
-- Agent-style planning and verification
+- confidence scoring
+- refusal / clarify behavior
+- logging to Postgres
+- guardrails for weak retrieval

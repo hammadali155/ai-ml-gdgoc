@@ -209,6 +209,7 @@ def rag_endpoint(payload: RagRequest) -> RagResponse:
         raise HTTPException(status_code=500, detail=f"RAG failed: {exc}") from exc
     return RagResponse(
         question=result["question"],
+        normalized_query=result["normalized_query"],
         answer=result["answer"],
         sources=result["sources"],
     )
