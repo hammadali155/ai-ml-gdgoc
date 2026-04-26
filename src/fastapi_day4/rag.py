@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from fastapi_day4.llm_client import generate_answer_from_prompt
-from fastapi_day4.retrieval import search_chunks
+from fastapi_day4.retrieval import dual_query_search
 
 
 def build_context_block(results: list[dict]) -> str:
@@ -38,11 +38,15 @@ Rules:
 
 def answer_with_rag(question: str, limit: int) -> dict:
     """Full RAG pipeline: retrieve → build prompt → generate answer."""
-    results = search_chunks(question, limit)
+    retrieval_payload = dual_query_search(question, limit)
+    results = retrieval_payload["results"]
+
     prompt = build_rag_prompt(question, results)
     answer = generate_answer_from_prompt(prompt)
+
     return {
         "question": question,
+        "normalized_query": retrieval_payload["normalized_query"],
         "answer": answer,
         "sources": results,
     }
