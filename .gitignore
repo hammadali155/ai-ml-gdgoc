@@ -4,6 +4,10 @@ Thumbs.db
 
 # Python bytecode
 __pycache__/
+.pytest_cache/
+.ruff_cache/
+.pytest_cache/
+.ruff_cache/
 *.pyc
 
 # Virtual environments
@@ -34,3 +38,7 @@ build/
 
 # Generated data
 data/generated/
+
+data/generated/
+dist/
+build/

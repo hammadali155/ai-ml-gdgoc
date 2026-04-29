@@ -10,6 +10,7 @@ from pydantic import BaseModel, Field
 from qdrant_client import QdrantClient
 from sqlalchemy.orm import Session
 
+from fastapi_day4.logging_utils import create_rag_log
 from fastapi_day4.rag import answer_with_rag
 from fastapi_day4.schema import RagRequest, RagResponse
 from fastapi_day4.settings import get_settings
@@ -202,14 +203,32 @@ async def list_db_items(db: Session = Depends(get_db)):  # noqa: B008
 
 
 @app.post("/rag", response_model=RagResponse)
-def rag_endpoint(payload: RagRequest) -> RagResponse:
+def rag_endpoint(payload: RagRequest, db: Session = Depends(get_db)) -> RagResponse:  # noqa: B008
     try:
         result = answer_with_rag(payload.question, payload.limit)
+
+        if settings.enable_rag_logging:
+            confidence = result["confidence"]
+            create_rag_log(
+                db,
+                question=result["question"],
+                normalized_query=result["normalized_query"],
+                action=result["action"],
+                reason=result["reason"],
+                answer=result["answer"],
+                top_score=confidence["top_score"],
+                avg_score=confidence["avg_score"],
+                result_count=confidence["result_count"],
+            )
+
+        return RagResponse(
+            question=result["question"],
+            normalized_query=result["normalized_query"],
+            action=result["action"],
+            reason=result["reason"],
+            answer=result["answer"],
+            confidence=result["confidence"],
+            sources=result["sources"],
+        )
     except Exception as exc:
         raise HTTPException(status_code=500, detail=f"RAG failed: {exc}") from exc
-    return RagResponse(
-        question=result["question"],
-        normalized_query=result["normalized_query"],
-        answer=result["answer"],
-        sources=result["sources"],
-    )
