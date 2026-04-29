@@ -46,6 +46,15 @@ class Settings(BaseSettings):
         default="llama-3.1-8b-instant", validation_alias="GROQ_MODEL"
     )
 
+    # --- Day 16: Retrieval Settings ---
+    dual_query_enabled: bool = Field(
+        default=True, validation_alias="DUAL_QUERY_ENABLED"
+    )
+    normalization_enabled: bool = Field(
+        default=True, validation_alias="NORMALIZATION_ENABLED"
+    )
+    merged_search_limit: int = Field(default=5, validation_alias="MERGED_SEARCH_LIMIT")
+
     # Comma-separated list in .env -> parsed into list[str] using custom logic
     allowed_origins_raw: str = Field(default="", validation_alias="ALLOWED_ORIGINS")
 

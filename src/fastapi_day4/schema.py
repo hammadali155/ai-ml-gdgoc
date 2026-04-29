@@ -21,5 +21,6 @@ class RagSourceItem(BaseModel):
 
 class RagResponse(BaseModel):
     question: str
+    normalized_query: str
     answer: str
     sources: list[RagSourceItem]
