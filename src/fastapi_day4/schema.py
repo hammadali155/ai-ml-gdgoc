@@ -19,8 +19,17 @@ class RagSourceItem(BaseModel):
     text: str
 
 
+class RagConfidence(BaseModel):
+    top_score: float
+    avg_score: float
+    result_count: int
+
+
 class RagResponse(BaseModel):
     question: str
     normalized_query: str
+    action: str
+    reason: str
     answer: str
+    confidence: RagConfidence
     sources: list[RagSourceItem]

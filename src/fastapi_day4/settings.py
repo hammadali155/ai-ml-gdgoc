@@ -45,6 +45,27 @@ class Settings(BaseSettings):
     groq_model_name: str = Field(
         default="llama-3.1-8b-instant", validation_alias="GROQ_MODEL"
     )
+    merged_search_limit: int = Field(default=5, validation_alias="MERGED_SEARCH_LIMIT")
+
+    # --- Day 17: Guardrails ---
+    min_top_score_for_answer: float = Field(
+        default=0.55, validation_alias="MIN_TOP_SCORE_FOR_ANSWER"
+    )
+    min_avg_score_for_answer: float = Field(
+        default=0.45, validation_alias="MIN_AVG_SCORE_FOR_ANSWER"
+    )
+    min_results_for_answer: int = Field(
+        default=2, validation_alias="MIN_RESULTS_FOR_ANSWER"
+    )
+    enable_clarify_behavior: bool = Field(
+        default=True, validation_alias="ENABLE_CLARIFY_BEHAVIOR"
+    )
+    enable_refuse_behavior: bool = Field(
+        default=True, validation_alias="ENABLE_REFUSE_BEHAVIOR"
+    )
+    enable_rag_logging: bool = Field(
+        default=True, validation_alias="ENABLE_RAG_LOGGING"
+    )
 
     # --- Day 16: Retrieval Settings ---
     dual_query_enabled: bool = Field(

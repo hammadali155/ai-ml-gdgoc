@@ -21,6 +21,10 @@ The project currently supports:
 - Roman-Urdu query normalization
 - dual-query retrieval
 - merged retrieval results for noisy inputs
+- confidence-based decision control
+- refusal when retrieval is too weak
+- clarification when the question is underspecified
+- Postgres logging of RAG request traces
 ## Tech Stack
 
 | Layer         | Technology                          |
@@ -59,6 +63,8 @@ src/
     ingestion.py        # Chunking and record building
     retrieval.py        # Semantic search over Qdrant
     normalization.py    # Roman-Urdu query normalization
+    guardrails.py       # Decision logic and confidence scoring
+    logging_utils.py    # Postgres logging helpers
     llm_client.py       # Groq LLM client helper
     rag.py              # RAG prompt construction & orchestration
     schema.py           # Pydantic request/response models
@@ -181,6 +187,7 @@ ruff format .
 - **Day 14:** Checkpoint (skipped in this workflow)
 - **Day 15:** RAG endpoint v1 with Groq and cited sources
 - **Day 16:** Roman-Urdu normalization and dual-query retrieval
+- **Day 17:** guardrails, refusal/clarify behavior, and logging to Postgres
 ## Known Limitations
 
 - Chunking uses a simple word-count strategy (no sentence-aware splitting)
@@ -191,7 +198,7 @@ ruff format .
 
 ## Next Steps
 
-- confidence scoring
-- refusal / clarify behavior
-- logging to Postgres
-- guardrails for weak retrieval
+- agent loop design
+- tool selection rules
+- response verification
+- production hardening
