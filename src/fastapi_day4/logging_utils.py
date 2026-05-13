@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from sqlalchemy.orm import Session
 
-from fastapi_day4.models import RagLog
+from fastapi_day4.models import AgentLog, RagLog
 
 
 def create_rag_log(
@@ -26,6 +26,30 @@ def create_rag_log(
         top_score=top_score,
         avg_score=avg_score,
         result_count=result_count,
+    )
+    db.add(log)
+    db.commit()
+    db.refresh(log)
+    return log
+
+
+def create_agent_log(
+    db: Session,
+    *,
+    question: str,
+    normalized_query: str,
+    plan: str,
+    action: str,
+    reason: str,
+    answer: str,
+) -> AgentLog:
+    log = AgentLog(
+        question=question,
+        normalized_query=normalized_query,
+        plan=plan,
+        action=action,
+        reason=reason,
+        answer=answer,
     )
     db.add(log)
     db.commit()
