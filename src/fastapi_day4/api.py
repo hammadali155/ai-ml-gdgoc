@@ -240,8 +240,8 @@ def rag_endpoint(payload: RagRequest, db: Session = Depends(get_db)) -> RagRespo
 
 @app.post("/agent-rag", response_model=AgentResponse)
 def agent_rag_endpoint(
-    payload: AgentRequest, db: Session = Depends(get_db)
-) -> AgentResponse:  # noqa: B008
+    payload: AgentRequest, db: Session = Depends(get_db)  # noqa: B008
+) -> AgentResponse:
     try:
         result = run_agent_loop(payload.question, payload.limit)
 
