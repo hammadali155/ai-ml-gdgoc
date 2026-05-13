@@ -2,12 +2,14 @@
 .DS_Store
 Thumbs.db
 
+# PDF documents
+*.pdf
+
+# Extracted text artifacts
+pdf_content.txt
+
 # Python bytecode
 __pycache__/
-.pytest_cache/
-.ruff_cache/
-.pytest_cache/
-.ruff_cache/
 *.pyc
 
 # Virtual environments
@@ -39,6 +41,5 @@ build/
 # Generated data
 data/generated/
 
-data/generated/
-dist/
-build/
+# Temp / scratch
+ignored/
