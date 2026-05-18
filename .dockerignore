@@ -1,26 +1,20 @@
-# VCS
 .git
 .gitignore
-
-# Python cache
 __pycache__/
 *.pyc
 *.pyo
-
-# Local environments
 .venv/
 .env
 .env.*
-*.log
-
-# Test / tooling caches
+docker.env
+.env.compose
 .pytest_cache/
 .ruff_cache/
 .mypy_cache/
-
-# Docs screenshots (optional; keep image small)
+.cache/
+*.log
 docs/screenshots/
-
-# Editor folders
 .vscode/
 .idea/
+dist/
+build/
