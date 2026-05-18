@@ -22,7 +22,7 @@ dev = [
 
 # If you use a src/ layout, explicitly tell hatch which package to ship.
 [tool.hatch.build.targets.wheel]
-packages = ["src/git_day_practice", "src/fastapi_day4"]
+packages = ["src/fastapi_day4"]
 
 # -------------------------
 # Ruff configuration

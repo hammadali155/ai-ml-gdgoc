@@ -2,6 +2,12 @@
 .DS_Store
 Thumbs.db
 
+# PDF documents
+*.pdf
+
+# Extracted text artifacts
+pdf_content.txt
+
 # Python bytecode
 __pycache__/
 .pytest_cache/
