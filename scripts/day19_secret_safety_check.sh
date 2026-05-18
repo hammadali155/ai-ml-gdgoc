@@ -2,7 +2,7 @@
 set -euo pipefail
 
 echo "Checking for tracked env files..."
-git ls-files | grep -E '(^|/)\.env($|\.|/)|(^|/)docker\.env$|(^|/)\.env\.compose$' && {
+git ls-files | grep -E '(^|/)\.env($|\.|/)|(^|/)docker\.env$|(^|/)\.env\.compose$' | grep -v '\.example' && {
   echo "Tracked secret-like env file found. Fix this."; exit 1
 } || true
 
