@@ -33,19 +33,3 @@ class RagResponse(BaseModel):
     answer: str
     confidence: RagConfidence
     sources: list[RagSourceItem]
-
-
-class AgentRequest(BaseModel):
-    question: str = Field(min_length=1, description="The user question.")
-    limit: int = Field(default=3, ge=1, le=10)
-
-
-class AgentResponse(BaseModel):
-    question: str
-    normalized_query: str
-    plan: list[str]
-    action: str
-    reason: str
-    answer: str
-    confidence: RagConfidence
-    sources: list[RagSourceItem]

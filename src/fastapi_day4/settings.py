@@ -67,13 +67,6 @@ class Settings(BaseSettings):
         default=True, validation_alias="ENABLE_RAG_LOGGING"
     )
 
-    # --- Day 18: Agent Loop ---
-    enable_agent_loop: bool = Field(default=True, validation_alias="ENABLE_AGENT_LOOP")
-    max_agent_steps: int = Field(default=4, validation_alias="MAX_AGENT_STEPS")
-    enable_agent_logging: bool = Field(
-        default=True, validation_alias="ENABLE_AGENT_LOGGING"
-    )
-
     # --- Day 16: Retrieval Settings ---
     dual_query_enabled: bool = Field(
         default=True, validation_alias="DUAL_QUERY_ENABLED"

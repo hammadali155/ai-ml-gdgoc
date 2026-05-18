@@ -16,14 +16,7 @@ RUN python -m pip install --upgrade pip \
     "psycopg[binary]" \
     sqlalchemy \
     alembic \
-    qdrant-client \
-    groq \
-    httpx
-
-# Install CPU-only PyTorch (avoids massive CUDA downloads)
-RUN python -m pip install torch --index-url https://download.pytorch.org/whl/cpu
-
-RUN python -m pip install sentence-transformers
+    qdrant-client
 
 EXPOSE 8000
 

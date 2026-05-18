@@ -10,10 +10,9 @@ from pydantic import BaseModel, Field
 from qdrant_client import QdrantClient
 from sqlalchemy.orm import Session
 
-from fastapi_day4.agent import run_agent_loop
-from fastapi_day4.logging_utils import create_agent_log, create_rag_log
+from fastapi_day4.logging_utils import create_rag_log
 from fastapi_day4.rag import answer_with_rag
-from fastapi_day4.schema import AgentRequest, AgentResponse, RagRequest, RagResponse
+from fastapi_day4.schema import RagRequest, RagResponse
 from fastapi_day4.settings import get_settings
 
 from .db import get_db
@@ -233,38 +232,3 @@ def rag_endpoint(payload: RagRequest, db: Session = Depends(get_db)) -> RagRespo
         )
     except Exception as exc:
         raise HTTPException(status_code=500, detail=f"RAG failed: {exc}") from exc
-
-
-# --------------- Day 18: Agent-RAG endpoint ---------------
-
-
-@app.post("/agent-rag", response_model=AgentResponse)
-def agent_rag_endpoint(
-    payload: AgentRequest, db: Session = Depends(get_db)  # noqa: B008
-) -> AgentResponse:
-    try:
-        result = run_agent_loop(payload.question, payload.limit)
-
-        if settings.enable_agent_logging:
-            create_agent_log(
-                db,
-                question=result["question"],
-                normalized_query=result["normalized_query"],
-                plan="\n".join(result["plan"]),
-                action=result["action"],
-                reason=result["reason"],
-                answer=result["answer"],
-            )
-
-        return AgentResponse(
-            question=result["question"],
-            normalized_query=result["normalized_query"],
-            plan=result["plan"],
-            action=result["action"],
-            reason=result["reason"],
-            answer=result["answer"],
-            confidence=result["confidence"],
-            sources=result["sources"],
-        )
-    except Exception as exc:
-        raise HTTPException(status_code=500, detail=f"Agent RAG failed: {exc}") from exc
